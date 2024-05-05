@@ -203,7 +203,7 @@ struct WindowContext {
     sf::Vector2i touchPos;
 
     unsigned int joystickId;
-    ImGuiKey_ joystickMapping[sf::Joystick::ButtonCount];
+    ImGuiKey joystickMapping[sf::Joystick::ButtonCount];
     StickInfo dPadInfo;
     StickInfo lStickInfo;
     StickInfo rStickInfo;
@@ -1098,7 +1098,7 @@ void SetJoystickMapping(int key, unsigned int joystickButton) {
     assert(s_currWindowCtx);
     // This function now expects ImGuiKey_* values.
     // For partial backwards compatibility, also expect some ImGuiNavInput_* values.
-    ImGuiKey_ finalKey;
+    ImGuiKey finalKey;
     switch (key) {
     case ImGuiNavInput_Activate:
         finalKey = ImGuiKey_GamepadFaceDown;
@@ -1122,7 +1122,7 @@ void SetJoystickMapping(int key, unsigned int joystickButton) {
         break;
     default:
         assert(key >= ImGuiKey_NamedKey_BEGIN && key < ImGuiKey_NamedKey_END);
-        finalKey = static_cast<ImGuiKey_>(key);
+        finalKey = static_cast<ImGuiKey>(key);
     }
     assert(joystickButton < sf::Joystick::ButtonCount);
     s_currWindowCtx->joystickMapping[joystickButton] = finalKey;
@@ -1562,7 +1562,7 @@ void initDefaultJoystickMapping() {
 
 void updateJoystickButtonState(ImGuiIO& io) {
     for (int i = 0; i < sf::Joystick::ButtonCount; ++i) {
-        ImGuiKey_ key = s_currWindowCtx->joystickMapping[i];
+        ImGuiKey key = s_currWindowCtx->joystickMapping[i];
         if (key != ImGuiKey_None) {
             bool isPressed = sf::Joystick::isButtonPressed(s_currWindowCtx->joystickId, i);
             if (s_currWindowCtx->windowHasFocus || !isPressed) {
@@ -1572,7 +1572,7 @@ void updateJoystickButtonState(ImGuiIO& io) {
     }
 }
 
-void updateJoystickAxis(ImGuiIO& io, ImGuiKey_ key, sf::Joystick::Axis axis, float threshold,
+void updateJoystickAxis(ImGuiIO& io, ImGuiKey key, sf::Joystick::Axis axis, float threshold,
                         float maxThreshold, bool inverted) {
     float pos = sf::Joystick::getAxisPosition(s_currWindowCtx->joystickId, axis);
     if (inverted) {
@@ -1586,7 +1586,7 @@ void updateJoystickAxis(ImGuiIO& io, ImGuiKey_ key, sf::Joystick::Axis axis, flo
     }
 }
 
-void updateJoystickAxisPair(ImGuiIO& io, ImGuiKey_ key1, ImGuiKey_ key2, sf::Joystick::Axis axis,
+void updateJoystickAxisPair(ImGuiIO& io, ImGuiKey key1, ImGuiKey key2, sf::Joystick::Axis axis,
                             float threshold, bool inverted) {
     updateJoystickAxis(io, key1, axis, -threshold, -100, inverted);
     updateJoystickAxis(io, key2, axis, threshold, 100, inverted);
@@ -1701,7 +1701,7 @@ ImVec2 SFML_GetWindowPos(ImGuiViewport* viewport) {
     // This results in that main viewport's coordinates are offsetted
     // in reference to MousePos, because ImGUi expects coordinates of 
     // client area.
-    return wc->window->getPosition() + sf::Vector2i(0, wc->titleBarHeight);
+    return wc->window->getPosition() + sf::Vector2i(8, wc->titleBarHeight);
 }
 
 void SFML_SetWindowSize(ImGuiViewport* viewport, ImVec2 size) {
