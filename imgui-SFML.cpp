@@ -33,6 +33,8 @@
 #include <X11/extensions/Xrandr.h>
 
 #undef None // collides with sf::Style::None
+#else
+#include <ApplicationServices/ApplicationServices.h>
 #endif
 #endif
 
@@ -1817,7 +1819,21 @@ void SFML_UpdateMonitors() {
         platform_io.Monitors.push_back(monitor);
     }
 #else
-#error "Update monitors is not implemented for this platform."
+    #define MAX_NUM_DISPLAYS 255
+    uint32_t displays[MAX_NUM_DISPLAYS];
+    uint32_t displayCount;
+    CGGetOnlineDisplayList(MAX_NUM_DISPLAYS, displays, &displayCount);
+    
+    for (int i = 0; i < displayCount; i++) {
+        ImGuiPlatformMonitor monitor;
+        auto bounds = CGDisplayBounds(displays[i]);
+
+        monitor.MainPos = monitor.WorkPos = ImVec2(bounds.origin.x, bounds.origin.y);
+        monitor.MainSize = monitor.WorkSize = ImVec2(bounds.size.width, bounds.size.height);
+
+        platform_io.Monitors.push_back(monitor);
+    }
+    
 #endif // _WIN32
 }
 
