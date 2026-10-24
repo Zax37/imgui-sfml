@@ -4,6 +4,7 @@ project(imgui_sfml VERSION 3.0.0 LANGUAGES CXX)
 option(IMGUI_SFML_FIND_SFML "Use find_package to find SFML" ON)
 option(IMGUI_SFML_ENABLE_WARNINGS "Enable compiler warnings" OFF)
 option(IMGUI_SFML_DISABLE_OBSOLETE_FUNCTIONS "Disable obsolete ImGui functions" OFF)
+option(IMGUI_SFML_ENABLE_VIEWPORTS "Enable multi-viewport support" OFF)
 
 # If you want to use your own user config when compiling ImGui, please set the following variables
 # For example, if you have your config in /path/to/dir/with/config/myconfig.h, set the variables as follows:
@@ -93,6 +94,9 @@ if(BUILD_SHARED_LIBS)
 endif()
 if(IMGUI_SFML_DISABLE_OBSOLETE_FUNCTIONS)
   target_compile_definitions(ImGui-SFML PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS)
+endif()
+if(IMGUI_SFML_ENABLE_VIEWPORTS)
+  target_compile_definitions(ImGui-SFML PRIVATE IMGUI_SFML_VIEWPORTS_ENABLE)
 endif()
 
 # Add compiler warnings

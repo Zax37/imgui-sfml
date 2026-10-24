@@ -40,6 +40,7 @@ IMGUI_SFML_API void Update(const sf::Vector2i& mousePos, const sf::Vector2f& dis
 IMGUI_SFML_API void Render(sf::RenderWindow& window);
 IMGUI_SFML_API void Render(sf::RenderTarget& target);
 IMGUI_SFML_API void Render();
+IMGUI_SFML_API void RenderPlatformWindows();
 
 IMGUI_SFML_API void Shutdown(const sf::Window& window);
 // Shuts down all ImGui contexts
